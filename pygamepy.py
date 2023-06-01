@@ -1,5 +1,7 @@
 import pygame
+import random
 from main_char import *
+from enemy_1 import *
 
 # pygame setup
 pygame.init() # iniciamos 
@@ -12,6 +14,7 @@ running = True
 
 main_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
+
 while running:
     
     screen.fill("white")# fill the screen with a color to wipe away anything from last frame
@@ -22,29 +25,57 @@ while running:
             running = False
     
     
-    main_char = MainCharacter("main","programador.png")
+    
+    # PERSONAJE PRINCIPAL #
+    
+    main_char = MainCharacter("main","programador.png",(50, 100))
     
     # Creamos la superficie cargando la imagen 
     main_char_surface = pygame.image.load(main_char.image_1)
     
-    # Reescalamos la imagen
-    # main_char_scaled = pygame.transform.scale(main_char_surface,main_char.scale)
-    
-    # Le damos las medidas a la hitbow
-    rectangulo = pygame.Rect((main_pos), (50, 100))
+    # Le damos las medidas a la hitbox
+    rect_main_char = pygame.Rect((main_pos), main_char.hit_box)
     
     # Creamos el rectangulo
-    rect_main = main_char_surface.get_rect()
-    pygame.draw.rect(screen,(255, 0, 0), rectangulo)
+    pygame.draw.rect(screen,(255, 0, 0), rect_main_char)
     
     # Lo printeamos en la pantalla
     screen.blit(main_char_surface,(main_pos))
+    
+    # ENEMIGO #
+    ## ES POR ACA ->
+    easy_enemy = enemy_1("enemy_1","easy_enemy.png",(33, 50),((random.randint(0,1280),random.randint(0,720))))
+    
+    # Creamos la superficie cargando la imagen 
+    easy_enemy_surface = pygame.image.load(easy_enemy.image_1)
+    
+    # le damos las medidas a la hit box
+    rect_easy_enemy = pygame.Rect(easy_enemy.spawn_cor, easy_enemy.hit_box)
+    
+    # dibujamos la hitbox
+    pygame.draw.rect(screen,(255, 0, 0), rect_easy_enemy)
+    # rectangulo = pygame.Rect((main_pos), (50, 100))
+    
+    
+    ## Aca tengo el colisionador 
+    if rect_main_char.colliderect(rect_easy_enemy):
+        print("El jugador colisiona con el enemigo")
+    
+    
+    
+    
+    screen.blit(easy_enemy_surface,(easy_enemy.spawn_cor))
     
     
     #Tengo que crear el movimiento por el objeto lo que no se como carajos hacer
     keys = pygame.key.get_pressed()
     if keys[pygame.K_RIGHT]:
         main_pos.x += 5
+        
+        #easy_enemy__pos.x = main_pos.x IDEA PARA SEGUIR AL MAIN CHAR
+        
+        
+        
         # main_char.move("rigth")
 
     if keys[pygame.K_LEFT]:
@@ -59,6 +90,7 @@ while running:
         main_pos.y -= 5
         # main_char.move("up")
 
+    # print(main_pos.x)
 
     # flip() the display to put your work on screen
     pygame.display.flip()

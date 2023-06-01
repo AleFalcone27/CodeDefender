@@ -2,10 +2,11 @@ import pygame
 
 class MainCharacter():
     tipo = "MainCharacter"
-    def __init__(self, id, imagen) -> None:
-    
-        self.image_1 = imagen
+    def __init__(self, id, imagen, hit_box) -> None:
         self.id = id
+        self.image_1 = imagen
+        self.hit_box = hit_box
+        
         
         # def move(self,direccion):
         #     if direccion == "left":
