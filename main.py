@@ -1,18 +1,24 @@
+# Importamos las bibliotecas 
 import pygame
-import random
-from main_char import *
-from enemy_1 import *
 
-# pygame setup
+# Importamos modulos propios
+from main_char import *
+from easy_enemy import easyEnemy
+
+# Creamos las "Constantes" de nuestro programa
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+
+# JUEGO #
 pygame.init() # iniciamos 
 
-screen = pygame.display.set_mode((1280, 720)) # se crea la ventana y sus dimensiones
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # se crea la ventana y sus dimensiones
 
 clock = pygame.time.Clock()
 
 running = True
 
-main_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+main_pos = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
 
 while running:
@@ -23,8 +29,6 @@ while running:
         # pygame.QUIT event means the user clicked X to close your window
         if event.type == pygame.QUIT:
             running = False
-    
-    
     
     # PERSONAJE PRINCIPAL #
     
@@ -42,42 +46,49 @@ while running:
     # Lo printeamos en la pantalla
     screen.blit(main_char_surface,(main_pos))
     
-    # ENEMIGO #
-    ## ES POR ACA ->
-    easy_enemy = enemy_1("enemy_1","easy_enemy.png",(33, 50),((random.randint(0,1280),random.randint(0,720))))
+    # Limitamos el movimiento del personaje principal a las medidas de nuestra screen
+    if rect_main_char.bottom > 720:
+        main_pos.y = 618
+    if rect_main_char.top < 0:
+        main_pos.y = 1
+    if rect_main_char.right > 1280:
+        main_pos.x = 1230
+    if rect_main_char.left < 0:
+        main_pos.x = 1
     
+    # ENEMIGO #
+    
+    # easy_enemy = 
+    
+    easy_enemy_list = easyEnemy.easy_enemy_create_list(1)
+    
+    for easy_enemy in easy_enemy_list:
+        if rect_main_char.colliderect(easy_enemy.easy_enemy_create(screen)):
+            print("El jugador colisiona con el enemigo")
+            
+            
     # Creamos la superficie cargando la imagen 
-    easy_enemy_surface = pygame.image.load(easy_enemy.image_1)
+    # easy_enemy_surface = pygame.image.load(easy_enemy.image_1)
     
     # le damos las medidas a la hit box
-    rect_easy_enemy = pygame.Rect(easy_enemy.spawn_cor, easy_enemy.hit_box)
-    
+    # rect_easy_enemy = pygame.Rect((100,100),easy_enemy.hit_box)
+
     # dibujamos la hitbox
-    pygame.draw.rect(screen,(255, 0, 0), rect_easy_enemy)
-    # rectangulo = pygame.Rect((main_pos), (50, 100))
-    
+    # pygame.draw.rect(screen,(255, 0, 0), rect_easy_enemy)
     
     ## Aca tengo el colisionador 
-    if rect_main_char.colliderect(rect_easy_enemy):
-        print("El jugador colisiona con el enemigo")
     
     
     
-    
-    screen.blit(easy_enemy_surface,(easy_enemy.spawn_cor))
-    
-    
-    #Tengo que crear el movimiento por el objeto lo que no se como carajos hacer
+    # screen.blit(easy_enemy_surface,(easy_enemy.spawn_cor))
+
+    #easy_enemy__pos.x = main_pos.x IDEA PARA SEGUIR AL MAIN CHAR
+
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_RIGHT]:
         main_pos.x += 5
         
-        #easy_enemy__pos.x = main_pos.x IDEA PARA SEGUIR AL MAIN CHAR
-        
-        
-        
-        # main_char.move("rigth")
-
     if keys[pygame.K_LEFT]:
         main_pos.x -= 5
         # main_char.move("left")
@@ -132,13 +143,7 @@ crear constantes para el ancho y largo de la pantalla
 timer = pygame.USEREVENT + 0
 pygame.time.set_timer(timer,1000)
 
-def crear_lista_donas(cantidad)
-for i in range(cantidad):
-    y = random,randrange(randogo,rango)
-    x = random,randrange(randogo,rango)
-    lista_donas.append(crear(x,y,60,60))
-    
-return lita_donas
+
 
 Tenemos que crear constructores para todos 
 - Personaje

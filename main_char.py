@@ -2,9 +2,9 @@ import pygame
 
 class MainCharacter():
     tipo = "MainCharacter"
-    def __init__(self, id, imagen, hit_box) -> None:
+    def __init__(self, id, image, hit_box) -> None:
         self.id = id
-        self.image_1 = imagen
+        self.image_1 = image
         self.hit_box = hit_box
         
         
