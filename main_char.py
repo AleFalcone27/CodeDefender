@@ -2,29 +2,25 @@ import pygame
 
 class MainCharacter():
     tipo = "MainCharacter"
-    def __init__(self, id, image, hit_box) -> None:
+    def __init__(self, id, image, image_up, hit_box) -> None:
         self.id = id
-        self.image_1 = image
+        self.image = image
+        self.image_up = image_up
         self.hit_box = hit_box
         
         
-        # def move(self,direccion):
-        #     if direccion == "left":
-        #         main_pos.x -= 5
-        #     if direccion == "rigth":
-        #         main_pos.x += 5
-        #     if direccion == "down":
-        #         main_pos.y += 5
-        #     if direccion == "up":
-        #         main_pos.y -= 5
-            
-    # # Caminar
-    # def walk(self, direccion):   
-    #     pass
-        
-    # #Salto
-    # def dash(self, distancia):
-    #     pass
+    def caminar(self,dir,pos,vel):
+        match dir:
+            case "up":
+                pos.y -= vel
+            case "down":
+                pos.y += 5
+            case "left":
+                pos.x -= 5
+            case "rigth":
+                pos.x += 5
+
+
 
 
 

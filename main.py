@@ -6,8 +6,8 @@ from main_char import *
 from easy_enemy import easyEnemy
 
 # Creamos las "Constantes" de nuestro programa
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
+SCREEN_WIDTH = 960
+SCREEN_HEIGHT = 540
 
 # JUEGO #
 pygame.init() # iniciamos 
@@ -32,16 +32,32 @@ while running:
     
     # PERSONAJE PRINCIPAL #
     
-    main_char = MainCharacter("main","programador.png",(50, 100))
+    main_char = MainCharacter("main","programador.png","programadorUP.png",(50, 100))
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_RIGHT]:
+        main_char.caminar("rigth", main_pos, 8)
+        main_char_surface = pygame.image.load(main_char.image)
+        
+    if keys[pygame.K_LEFT]:
+        main_char.caminar("left", main_pos, 8)
+        
+    if keys[pygame.K_DOWN]:
+        main_char.caminar("down", main_pos, 8)
+        
+    if keys[pygame.K_UP]:
+        main_char.caminar("up", main_pos, 8)
+        main_char_surface = pygame.image.load(main_char.image_up)
+        screen.blit(main_char_surface,(main_pos))
     
     # Creamos la superficie cargando la imagen 
-    main_char_surface = pygame.image.load(main_char.image_1)
+    main_char_surface = pygame.image.load(main_char.image)
     
     # Le damos las medidas a la hitbox
     rect_main_char = pygame.Rect((main_pos), main_char.hit_box)
     
     # Creamos el rectangulo
-    pygame.draw.rect(screen,(255, 0, 0), rect_main_char)
+    pygame.draw.rect(screen,(0, 0, 0), rect_main_char)
     
     # Lo printeamos en la pantalla
     screen.blit(main_char_surface,(main_pos))
@@ -56,16 +72,28 @@ while running:
     if rect_main_char.left < 0:
         main_pos.x = 1
     
+    
+
+    
+    
+    
+    
+    
+    
+    
     # ENEMIGO #
     
-    # easy_enemy = 
     
-    easy_enemy_list = easyEnemy.easy_enemy_create_list(1)
+    easy_enemy_list = easyEnemy.easy_enemy_create_list(10)
     
-    for easy_enemy in easy_enemy_list:
-        if rect_main_char.colliderect(easy_enemy.easy_enemy_create(screen)):
-            print("El jugador colisiona con el enemigo")
-            
+    a = easyEnemy()
+    
+    a.easy_enemy_update(screen,easy_enemy_list)
+
+
+    # if rect_main_char.colliderect():
+    #     print("El jugador colisiona con el enemigo")
+
             
     # Creamos la superficie cargando la imagen 
     # easy_enemy_surface = pygame.image.load(easy_enemy.image_1)
@@ -85,20 +113,13 @@ while running:
     #easy_enemy__pos.x = main_pos.x IDEA PARA SEGUIR AL MAIN CHAR
 
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_RIGHT]:
-        main_pos.x += 5
+    
         
-    if keys[pygame.K_LEFT]:
-        main_pos.x -= 5
-        # main_char.move("left")
+        # main_char.image = "programadorUP.png"
+        # main_char_surface = pygame.image.load(main_char.image)
+        # screen.blit(main_char_surface,(main_pos))
         
-    if keys[pygame.K_DOWN]:
-        main_pos.y += 5
-        # main_char.move("down")
-        
-    if keys[pygame.K_UP]:
-        main_pos.y -= 5
+        # print(main_char.image)
         # main_char.move("up")
 
     # print(main_pos.x)
