@@ -5,6 +5,8 @@ from player import MainChar
 
 from pygame.locals import *
 
+# ...
+
 # Inicializamos  Pygame
 pygame.init()
 
@@ -23,6 +25,7 @@ BLUE = (0, 0, 255)
 player = MainChar(SCREEN_WIDTH / 2 - 50 / 2, SCREEN_HEIGHT / 2 - 100 / 2, 50 , 100 ,"programador.png", 5)
 
 
+
 # Obtenemos los atributos del obj player para utilizalos en nuestro juego
 PLAYER_WIDTH = player.width
 PLAYER_HEIGHT = player.height
@@ -37,8 +40,9 @@ bullet_vel = 10
 bullets = []
 
 
-# Enemy properties
-enemy_size = 30
+# Enemy propertiess
+easy_enemy_height = 30
+easy_enemy_width = 74
 enemy_vel = 3
 enemies = []
 
@@ -47,18 +51,19 @@ enemies = []
 def create_enemy():
     side = random.randint(1, 4)
     if side == 1:  # Top
-        x = random.randint(0, SCREEN_WIDTH - enemy_size)
-        y = -enemy_size
+        x = random.randint(0, SCREEN_WIDTH - easy_enemy_width)
+        y = -easy_enemy_height
     elif side == 2:  # Right
         x = SCREEN_WIDTH
-        y = random.randint(0, SCREEN_HEIGHT - enemy_size)
+        y = random.randint(0, SCREEN_HEIGHT - easy_enemy_height)
     elif side == 3:  # Bottom
-        x = random.randint(0, SCREEN_WIDTH - enemy_size)
+        x = random.randint(0, SCREEN_WIDTH - easy_enemy_width)
         y = SCREEN_HEIGHT
     else:  # Left
-        x = -enemy_size
-        y = random.randint(0, SCREEN_HEIGHT - enemy_size)
-    enemies.append(pygame.Rect(x, y, enemy_size, enemy_size))
+        x = -easy_enemy_height
+        y = random.randint(0, SCREEN_HEIGHT - easy_enemy_width)
+    enemy = pygame.Rect(x, y, easy_enemy_width, easy_enemy_height)
+    enemies.append(enemy)
 
 # Game loop
 running = True
@@ -86,16 +91,16 @@ while running:
             bullets.append((bullet_x, bullet_y, bullet_dir_x, bullet_dir_y))
 
 
-    # Move the player
+    # Movimientos del jugador
     keys = pygame.key.get_pressed()
     if keys[K_a] and player_x > 0:
-        player_x -= player_vel
+        player_x = player.caminar("left",player_x)
     if keys[K_d] and player_x < SCREEN_WIDTH - PLAYER_WIDTH:
-        player_x += player_vel
+        player_x = player.caminar("rigth",player_x)
     if keys[K_w] and player_y > 0:
-        player_y -= player_vel
+        player_y = player.caminar("up",player_y)
     if keys[K_s] and player_y < SCREEN_HEIGHT - PLAYER_HEIGHT:
-        player_y += player_vel
+        player_y = player.caminar("down",player_y)
 
 
     # Move the bullets
@@ -108,7 +113,6 @@ while running:
             bullets_to_remove.append(i)
         else:
             bullets[i] = (bullet_x, bullet_y, bullet_dir_x, bullet_dir_y)
-
 
 
     # Remove bullets that have gone off-screen
@@ -172,13 +176,10 @@ while running:
         pygame.draw.rect(screen, (0,255,0), bullet[:2] + (bullet_size, bullet_size))
 
     for enemy in enemies:
+        easy_enemy_image = pygame.image.load("sintaxError_image.png")
+        pygame.draw.rect(screen, (255,255,0), enemy)
+        screen.blit(easy_enemy_image, enemy)
 
-        easy_enemy_image = pygame.image.load("easy_enemy.png")
-        easy_enemy_image_rect = easy_enemy_image.get_rect()
-        screen.blit(easy_enemy_image,easy_enemy_image_rect)
-
-
-        pygame.draw.rect(screen, RED, enemy)
 
     pygame.display.flip()
 

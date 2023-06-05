@@ -6,3 +6,21 @@ class MainChar():
         self. height = height
         self.image = image
         self.vel = vel
+
+
+    def caminar(self,dir,player_pos,player_vel=5):
+        match dir:
+            
+            # Nos guardamos el valor de la posicion menos o mas la velocidad segun corresponda y retornamos la misma 
+            case "up":
+                player_pos -= player_vel
+                return player_pos
+            case "down":
+                player_pos += player_vel
+                return player_pos
+            case "left":
+                player_pos -= player_vel
+                return player_pos
+            case "rigth":
+                player_pos += player_vel
+                return player_pos
