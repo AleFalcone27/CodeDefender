@@ -1,16 +1,16 @@
+import pygame
 class MainChar():
     def __init__(self, pos_x:int, pos_y:int, width:int, height:int, image:str, vel:int):
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.width = width
         self. height = height
-        self.image = image
+        self.image = pygame.image.load(image)
         self.vel = vel
 
 
     def caminar(self,dir,player_pos,player_vel=5):
         match dir:
-            
             # Nos guardamos el valor de la posicion menos o mas la velocidad segun corresponda y retornamos la misma 
             case "up":
                 player_pos -= player_vel

@@ -5,45 +5,33 @@ from player import MainChar
 
 from pygame.locals import *
 
-
-
 # Inicializamos  Pygame
 pygame.init()
 
-# Set up the display window
+# PANTALLA
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Enemy Shooter")
 
-# Colors
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
 
-
+# Creamos una instancia de la clase mainChar
 player = MainChar(SCREEN_WIDTH / 2 - 50 / 2, SCREEN_HEIGHT / 2 - 100 / 2, 50 , 100 ,"programador.png", 5)
-
 
 
 # Obtenemos los atributos del obj player para utilizalos en nuestro juego
 PLAYER_WIDTH = player.width
 PLAYER_HEIGHT = player.height
 player_vel = player.vel
-player_x = player.pos_x
-player_y = player.pos_y
-
 
 # Bullet properties
 bullet_size = 10
 bullet_vel = 10
 bullets = []
 
-
 # Enemy propertiess
 easy_enemy_height = 30
 easy_enemy_width = 74
-enemy_vel = 3
 enemies = []
 
 
@@ -82,14 +70,33 @@ while running:
             if event.key == K_ESCAPE:
                 running = False
         elif event.type == MOUSEBUTTONDOWN:
-            bullet_x = player_x + PLAYER_WIDTH / 2 - bullet_size / 2
-            bullet_y = player_y + PLAYER_HEIGHT / 2 - bullet_size / 2
+            bullet_x = player.pos_x + PLAYER_WIDTH / 2 - bullet_size / 2
+            bullet_y = player.pos_y + PLAYER_HEIGHT / 2 - bullet_size / 2
+            
             # Obtenemos la posicion del cursor
             mouse_x, mouse_y = pygame.mouse.get_pos()
+
+            """
+            - bullet_x, bullet_Y son en principio la posicion de spawneo 
+            - Restamos a la posicion de spawneo de la bala la posicion del mouse al momento del click
+            CURSOR POS:  (496, 196)
+            PLAYERPOS :  375.0 250.0
+            BULLET DIR 101.0 -99.0
+            """
+            
+            # bullet_dir_x y bullet_dir_y son la direccion en la que va la bala
             bullet_dir_x = mouse_x - bullet_x
             bullet_dir_y = mouse_y - bullet_y
-            # Aca no se que carajos pasa INVESTIGAR
-            bullet_dir_length = max(abs(bullet_dir_x), abs(bullet_dir_y))
+            print("CURSOR",mouse_x,mouse_y)
+            print("BULLET DIR", bullet_dir_x, bullet_dir_y)
+            print("POSICION PLAYER = ", player.pos_x, player.pos_y)
+            
+            """
+            La funcion abs verifica si el número es positivo o cero, entonces el valor absoluto es igual 
+            al número original. Si el número es negativo, 
+            el valor absoluto es igual al número multiplicado por -1, lo que elimina el signo negativo.
+            """
+            bullet_dir_length = max(abs(bullet_dir_x), abs(bullet_dir_y)) 
             bullet_dir_x /= bullet_dir_length
             bullet_dir_y /= bullet_dir_length
             bullets.append((bullet_x, bullet_y, bullet_dir_x, bullet_dir_y))
@@ -106,14 +113,15 @@ while running:
     
     # Movimientos del jugador
     keys = pygame.key.get_pressed()
-    if keys[K_a] and player_x > 0:
-        player_x = player.caminar("left",player_x)
-    if keys[K_d] and player_x < SCREEN_WIDTH - PLAYER_WIDTH:
-        player_x = player.caminar("rigth",player_x)
-    if keys[K_w] and player_y > 0:
-        player_y = player.caminar("up",player_y)
-    if keys[K_s] and player_y < SCREEN_HEIGHT - PLAYER_HEIGHT:
-        player_y = player.caminar("down",player_y)
+    if keys[K_a] and player.pos_x > 0:
+        player.pos_x = player.caminar("left",player.pos_x)
+        print(player.pos_x)
+    if keys[K_d] and player.pos_x < SCREEN_WIDTH - PLAYER_WIDTH:
+        player.pos_x = player.caminar("rigth",player.pos_x)
+    if keys[K_w] and player.pos_y > 0:
+        player.pos_y = player.caminar("up",player.pos_y)
+    if keys[K_s] and player.pos_y < SCREEN_HEIGHT - PLAYER_HEIGHT:
+        player.pos_y = player.caminar("down",player.pos_y)
 
 
     # Move the bullets
@@ -133,17 +141,16 @@ while running:
         bullets.pop(i)
 
 
-
     # Move the enemies
     for enemy in enemies:
-        if enemy.x < player_x:
-            enemy.x += enemy_vel -2
-        elif enemy.x > player_x:
-            enemy.x -= enemy_vel -2
-        if enemy.y < player_y:
-            enemy.y += enemy_vel -2
-        elif enemy.y > player_y:
-            enemy.y -= enemy_vel -2
+        if enemy.x < player.pos_x:
+            enemy.x += player.vel -4
+        elif enemy.x > player.pos_x:
+            enemy.x -= player.vel -4
+        if enemy.y < player.pos_y:
+            enemy.y += player.vel -4
+        elif enemy.y > player.pos_y:
+            enemy.y -= player.vel -4
 
 
 
@@ -164,7 +171,7 @@ while running:
         bullets.pop(i)
 
     # Check collision between player and enemies
-    player_rect = pygame.Rect(player_x, player_y, PLAYER_WIDTH, PLAYER_HEIGHT)
+    player_rect = pygame.Rect(player.pos_x, player.pos_y, PLAYER_WIDTH, PLAYER_HEIGHT)
     for enemy in enemies:
         if player_rect.colliderect(enemy):
             running = False  # Game over if player collides with an enemy
@@ -174,20 +181,20 @@ while running:
         create_enemy()
 
     # Draw the game
-    screen.fill(WHITE)
+    screen.fill("WHITE")
 
 
-    # Accedemos al atributo image 
-    image =  pygame.image.load(player.image)  
-    # Obtener el rectángulo de la imagen 
-    image_rect = image.get_rect()   
-    # Centramos el rectangulo con la posicion de nuestro personaje
-    image_rect.center = (player_x + 50 // 2, player_y + 100 // 2)
+    ## DIBUJAMOS AL PERSONAJE PRINCIPAL
+    image =  player.image # Accedemos al atributo imagen 
+    image_rect = image.get_rect()   # Obtener el rectángulo de la imagen 
+    image_rect.center = (player.pos_x + 50 // 2, player.pos_y + 100 // 2) # Centramos el rectangulo con la posicion de nuestro personaje
     screen.blit(image, image_rect)  
 
+    # DIBUJAMOS LAS BALAS
     for bullet in bullets:
         pygame.draw.rect(screen, (0,255,0), bullet[:2] + (bullet_size, bullet_size))
 
+    # DIBUJAMOS LOS ENEMYGOS
     for enemy in enemies:
         easy_enemy_image = pygame.image.load("sintaxError_image.png")
         pygame.draw.rect(screen, (255,255,0), enemy)
