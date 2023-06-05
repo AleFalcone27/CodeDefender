@@ -5,7 +5,7 @@ from player import MainChar
 
 from pygame.locals import *
 
-# ...
+
 
 # Inicializamos  Pygame
 pygame.init()
@@ -69,6 +69,10 @@ def create_enemy():
 running = True
 clock = pygame.time.Clock()
 
+# Cronometro
+start_time = pygame.time.get_ticks()
+elapsed_time = 0
+
 while running:
     # Handle events
     for event in pygame.event.get():
@@ -91,6 +95,15 @@ while running:
             bullets.append((bullet_x, bullet_y, bullet_dir_x, bullet_dir_y))
 
 
+    ## Hacemos el cronometro para guardar el tiempo transcurrido 
+    current_time = pygame.time.get_ticks()
+    elapsed_time = current_time - start_time
+    font = pygame.font.Font(None, 36)
+    timer_text = font.render("Time: " + str(elapsed_time / 1000), True, "BLACK")
+    screen.blit(timer_text, (10, 500))
+
+    pygame.display.flip()
+    
     # Movimientos del jugador
     keys = pygame.key.get_pressed()
     if keys[K_a] and player_x > 0:
