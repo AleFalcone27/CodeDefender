@@ -24,3 +24,6 @@ class MainChar():
             case "rigth":
                 player_pos += player_vel
                 return player_pos
+            
+    
+    

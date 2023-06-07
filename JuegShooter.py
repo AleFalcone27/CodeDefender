@@ -1,6 +1,7 @@
 import pygame
 import random
 from player import MainChar
+from rock_element import Rocks
 
 
 from pygame.locals import *
@@ -9,7 +10,7 @@ from pygame.locals import *
 pygame.init()
 
 # PANTALLA
-SCREEN_WIDTH = 800
+SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Enemy Shooter")
@@ -34,6 +35,13 @@ easy_enemy_height = 30
 easy_enemy_width = 74
 enemies = []
 
+#PROBAR APARECER EN ALGUN LUGAR RANDOM 
+list_rocks = [
+        Rocks("rock.png",40,200,100),
+        Rocks("rock.png",40,50,350),
+        Rocks("rock.png",40,800,250),
+        Rocks("rock.png",40,300,425)]
+
 
 # Function to create a new enemy
 def create_enemy():
@@ -52,6 +60,7 @@ def create_enemy():
         y = random.randint(0, SCREEN_HEIGHT - easy_enemy_width)
     enemy = pygame.Rect(x, y, easy_enemy_width, easy_enemy_height)
     enemies.append(enemy)
+
 
 # Game loop
 running = True
@@ -108,7 +117,6 @@ while running:
     font = pygame.font.Font(None, 36)
     timer_text = font.render("Time: " + str(elapsed_time / 1000), True, "BLACK")
     screen.blit(timer_text, (10, 500))
-
     pygame.display.flip()
     
     # Movimientos del jugador
@@ -153,7 +161,6 @@ while running:
             enemy.y -= player.vel -4
 
 
-
     # Check collision between bullets and enemies
     bullets_to_remove = []
     for i, bullet in enumerate(bullets):
@@ -164,7 +171,6 @@ while running:
                 bullets_to_remove.append(i)
                 enemies.pop(j)
                 break
-
 
     # Remove bullets and enemies that have collided
     for i in reversed(bullets_to_remove):
@@ -179,16 +185,27 @@ while running:
     # Generate new enemies
     if len(enemies) < 5:
         create_enemy()
+        
 
     # Draw the game
     screen.fill("WHITE")
+    fondo = pygame.image.load("floor.png")
+    screen.blit(fondo, (0, 0))
+    
+    # DIBUJAMOS LAS PIEDRAS
 
+    for rock in list_rocks:
+        rock_surface = rock.image
+        rock_surface = pygame.transform.scale(rock_surface, (rock.rescale,rock.rescale))
+        screen.blit(rock_surface,(rock.pos_x,rock.pos_y))
+    
 
     ## DIBUJAMOS AL PERSONAJE PRINCIPAL
     image =  player.image # Accedemos al atributo imagen 
     image_rect = image.get_rect()   # Obtener el rectángulo de la imagen 
     image_rect.center = (player.pos_x + 50 // 2, player.pos_y + 100 // 2) # Centramos el rectangulo con la posicion de nuestro personaje
     screen.blit(image, image_rect)  
+
 
     # DIBUJAMOS LAS BALAS
     for bullet in bullets:
@@ -197,8 +214,8 @@ while running:
     # DIBUJAMOS LOS ENEMYGOS
     for enemy in enemies:
         easy_enemy_image = pygame.image.load("sintaxError_image.png")
-        pygame.draw.rect(screen, (255,255,0), enemy)
         screen.blit(easy_enemy_image, enemy)
+        
 
 
     pygame.display.flip()
