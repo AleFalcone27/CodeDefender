@@ -15,9 +15,12 @@ class MainChar():
             # Nos guardamos el valor de la posicion menos o mas la velocidad segun corresponda y retornamos la misma 
             case "up":
                 player_pos -= player_vel
+                self.image = pygame.image.load("Images\programadorUp.png")
                 return player_pos
+            
             case "down":
                 player_pos += player_vel
+                self.image = pygame.image.load("Images\programador.png")
                 return player_pos
             case "left":
                 player_pos -= player_vel
