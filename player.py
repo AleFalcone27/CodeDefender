@@ -30,4 +30,5 @@ class MainChar():
                 return player_pos
             
     
-    
+    def get_rect(self, posx, posy):
+        return pygame.Rect(posx, posy, self.width, self.height)
