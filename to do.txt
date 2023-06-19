@@ -6,3 +6,5 @@
 - Enemigo secundario Con seguimiento
 - Boss final
 - Sonidos: Falta solo el sonido de la musica 
+- SQL
+- GUARDAR EN CSV
