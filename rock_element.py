@@ -9,21 +9,14 @@ class Rocks():
         self.image = pygame.image.load(image)
         
 
+    # DIBUJAMOS LAS PIEDRAS
+    def draw_rocks(self,list_rocks,screen):
+        for rock in list_rocks:
+            rock_surface = self.image
+            rock_surface = pygame.transform.scale(rock_surface, (rock.rescale, rock.rescale))
+            rock_rect = pygame.Rect(self.pos_x, self.pos_y, self.rescale, self.rescale)
+            screen.blit(rock_surface, (rock_rect))
+        return rock_rect
 
-        # if len(lista_rocas) < 3:
-        
-    # rock = Rocks("rock.png",40,SCREEN_WIDTH,SCREEN_HEIGHT)
-    # rock_surface = rock.image
-    # rock_surface = pygame.transform.scale(rock_surface,(rock.rescale,rock.rescale))
-    # rock_rect = rock_surface.get_rect()
-    # rock_rect.x = rock.pos_x
-    # rock_rect.y = rock.pos_y
-    # screen.blit(rock_surface, rock_rect)
-    
-    
-    
-    
 
-    
-    
-    
+# VEr si puedo agregar la colision como atributo

@@ -31,12 +31,15 @@ def remove_bullet_off_screen(bullets_to_remove,bullets): #COMO FUNCIONA ESTA?
         bullets.pop(i)
     return bullets
             
+            
 def remove_bullet_when_hit_enemy(bullets_to_remove,bullets):
     for i in reversed(bullets_to_remove):
-        bullets.pop(i)
+        try:
+            bullets.pop(i)
+        except IndexError:
+            print("SOLUCIONASTE")
+            pass
     return bullets
-    
-    
     
 def bullet_colision(bullets_to_remove,bullets,enemies,bullet_size):
     for i, bullet in enumerate(bullets):
@@ -49,3 +52,9 @@ def bullet_colision(bullets_to_remove,bullets,enemies,bullet_size):
                 enemies.pop(j)
                 bullet_hit  = True # Incrementar el puntaje por cada enemigo alcanzado
                 return bullet_hit
+            
+            
+            
+#   File "c:\Users\aleef\OneDrive\Escritorio\JUEGO\bullets.py", line 37, in remove_bullet_when_hit_enemy
+#     bullets.pop(i)
+# IndexError: pop from empty list
