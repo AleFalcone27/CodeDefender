@@ -1,18 +1,13 @@
 import pygame
 import random
 from player import MainChar
-
 from rock_element import Rocks
-
 from pygame.locals import *
-
 from bullets import move_bullet,remove_bullet_off_screen,remove_bullet_when_hit_enemy,bullet_colision
-
 from features import draw_score
-
 from Levels.LVL1 import *
 
-# Inicializamos Pygame
+# INICIALIZAMOS PYGAME
 pygame.init()
 
 # PANTALLA
@@ -21,30 +16,22 @@ SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Enemy Shooter")
 
-# Creamos una instancia de la clase mainChar
+# CREAMOS UNA INSTACIA DE LA CLASE MAINCHAR
 player = MainChar(SCREEN_WIDTH / 2 - 50 / 2, SCREEN_HEIGHT / 2 - 100 / 2, 50, 100, "Images\programador.png", 5)
 
-# Obtenemos los atributos del obj player para utilizarlos en nuestro juego
-PLAYER_WIDTH = player.width
-PLAYER_HEIGHT = player.height
-player_vel = player.vel
 
-# Bullet properties
+# BULLET
 bullet_size = 10
 bullet_vel = 10
 bullets = []
 
-# Enemy properties
+# ENEMY
 easy_enemy_height = 30
 easy_enemy_width = 74
 enemies = []
-
-
 enemy_vel = 1
 
-score = 0
-
-# SOUNDSa
+# SOUNDS
 shot_sound = pygame.mixer.Sound("Sounds\shootSound.wav")
 lose_sound = pygame.mixer.Sound("Sounds\loseSound.wav")
 shot_sound.set_volume(0.1)  # Establece el volumen del sonido de disparo al 50%
@@ -69,6 +56,8 @@ list_rocks = [
     Rocks("Images\\rock.png", 40, 800, 125)
 ]
 
+# SCORE
+score = 0
 
 # FUNCION PARA CREAR NUEVOS ENEMIGOS
 def create_enemy():
@@ -89,16 +78,10 @@ def create_enemy():
     enemies.append(enemy)
 
 
-
-
 # GAME LOOP
 running = True
 clock = pygame.time.Clock()
 
-
-# CUANDO APRETE LA PAUSA EL PERSONAJE NO SE PUEDA NI MOVER NI APRETAR EL BOTON
-# CUANDOE STOY EN PAUSA NO SE LEAN LOS INPUTS DEL USUARIO
-# cUANDO ESTOY EN PAUSA NO SE LEAN LOS EVENTOS QUE NO SEAN CERRAR EL JUEGO
 
 while running:
     current_time = pygame.time.get_ticks() /1000
@@ -109,8 +92,8 @@ while running:
         elif event.type == MOUSEBUTTONDOWN:
             if not pause:
                 shot_sound.play()
-                bullet_x = player.pos_x + PLAYER_WIDTH / 2 - bullet_size / 2
-                bullet_y = player.pos_y + PLAYER_HEIGHT / 2 - bullet_size / 2
+                bullet_x = player.pos_x + player.width / 2 - bullet_size / 2
+                bullet_y = player.pos_y + player.height / 2 - bullet_size / 2
                 # Obtenemos la posicion del cursor
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 # bullet_dir_x y bullet_dir_y son la direccion en la que va la bala
@@ -125,66 +108,46 @@ while running:
             if event.key == K_ESCAPE:
                 pause = not pause
 
-
-
     if pause:
-        
         if flag_pause == True:
-            pause_start_time = pygame.time.get_ticks() /1000 # Guardo el el segundo en el cual el juego se pone en pausa
+            pause_start_time = pygame.time.get_ticks() /1000 # ME QUEDOa CON EL TICK EN EL CUAL SE INGRESA A LA PAUSA
             pause_start_time = int(pause_start_time)
-            print("PRIMER SEGUNDO DE PAUSA: ",pause_start_time)
             flag_pause = False
-        paused_time = pygame.time.get_ticks() /1000  # Me quedo con el segundo en el cual el juego sale de la pausa
+        paused_time = pygame.time.get_ticks() /1000  # ME QUEDO CON EL TICK EN EL CUAL SE SALE DE LA PAUSA
         paused_time = int(paused_time)
         flag2 = True
-        
+
+        font = pygame.font.SysFont("microsoftjhengheimicrosoftjhengheiui", 30)
+        pause_text = font.render("PAUSE"  , True, "BLACK")
+        screen.blit(elapsed_time_text, (10, 40))         
         
     # VERIFICAMOS LA PAUSA
     if not pause:
-    
-    
-    
         if flag2 == True:
-            
-            # DIBUJAMOS EL CRONOMETRO
-            primer_tick_bandera = pygame.time.get_ticks() / 1000
-            primer_tick_bandera = int(primer_tick_bandera)
-            total_paused_time_actual = paused_time - pause_start_time  # 5
-            total_paused_time =  total_paused_time + total_paused_time_actual # 0 + 5
-            elapsed_time =  primer_tick_bandera - total_paused_time # 10 - 5
+            pause_time = pygame.time.get_ticks() / 1000 # ME QUEDO CON EL PRIMER SEGUNDO 
+            pause_time = int(pause_time)
+            total_paused_time_actual = paused_time - pause_start_time  # RESTAMOS EL TICK EN EL CUAL SE SALIO DE LA PAUSA AL TICK EN EL CUAL SE INGRESO
+            total_paused_time = total_paused_time + total_paused_time_actual # ACUMULAMOS EL TIEMPO TOTAL DE PAUSA PARA RESTARSELO AL CRONOMETRO MAIN
+            elapsed_time = pause_time - total_paused_time # RESTAMOS EL TOTAL DEL TIEMPO DE PAUSA AL RELOJ MAIN
             flag2 = False
+            
         
-        
-        # Draw the game
-        screen.fill("WHITE")
-        fondo = pygame.image.load("Images\\floor.png")
-        screen.blit(fondo, (0, 0))
-        
-        
-        elapsed_time = current_time - total_paused_time
-        font = pygame.font.SysFont("microsoftjhengheimicrosoftjhengheiui", 30)
-        elapsed_time = int(elapsed_time)
-        elapsed_time_text = font.render("Time: " + str(elapsed_time ) , True, "BLACK")
-        
-
-        flag_pause = True
-        
-        
-        # MOVIMIENTO DEL JUEGADOR
+        # MOVIMIENTO DEL JUGADOR
         keys = pygame.key.get_pressed()
         if keys[K_a] and player.pos_x > 0:
             player.pos_x = player.caminar("left", player.pos_x)
-        if keys[K_d] and player.pos_x < SCREEN_WIDTH - PLAYER_WIDTH:
+        if keys[K_d] and player.pos_x < SCREEN_WIDTH - player.width:
             player.pos_x = player.caminar("rigth", player.pos_x)
         if keys[K_w] and player.pos_y > 0:
             player.pos_y = player.caminar("up", player.pos_y)
-        if keys[K_s] and player.pos_y < SCREEN_HEIGHT - PLAYER_HEIGHT:
+        if keys[K_s] and player.pos_y < SCREEN_HEIGHT - player.height:
             player.pos_y = player.caminar("down", player.pos_y)
+        # Creamos el reactangulo del jugador
+        player_rect = player.get_rect(player.pos_x,player.pos_y)
 
 
-
-        # LOGICA DE LAS BALAS 
-        # Remove bullets that have gone off-screen
+        # ------ LOGICA DE LAS BALAS -----
+        # eliminamos las balas que se sale de la pantalla 
         bullets_to_remove =  move_bullet(bullets,bullet_vel)
         remove_bullet_off_screen(bullets_to_remove,bullets)
         # Verifica la colision de las balas con los enemigos y elimina a ambos en caso de colision
@@ -193,16 +156,10 @@ while running:
             score = score + 1
 
 
-        # PLAYER
-        # Creamos el reactangulo del jugador
-        player_rect = player.get_rect(player.pos_x,player.pos_y)
-
-        # ENEMIGOS
+        # ----- ENEMIGOS ------
         for enemy in enemies:
             if player_rect.colliderect(enemy):
                 running = False  # Game over if player collides with an enemy
-        
-        # ENEMY
         # Move the enemies
         for enemy in enemies:
             if enemy.x < player.pos_x:
@@ -214,17 +171,9 @@ while running:
             elif enemy.y > player.pos_y:
                 enemy.y -= enemy_vel
         
-        # Generate new enemies
         
-        # if score < 10:
-        #     level_1()
+        # ----- NIVELES ------
         
-
-        
-        
-        round(score,screen)
-        
-
         if score == 0:
             tutorial(enemies,create_enemy)
             
@@ -243,11 +192,15 @@ while running:
         if score >= 58 and score < 68:
             lvl_4(enemies,create_enemy,list)
             enemi_vel = 1.7
+            
         
-        # 14
-        # 34
-        # 58
-        # 87
+    # DIBUJAMOS FONDO
+        fondo = pygame.image.load("Images\\floor.png")
+        screen.blit(fondo, (0, 0))
+        
+        #DIBUJAMOS EL SCORE
+        round(score,screen)
+        
         
         # DIBUJAMOS LAS PIEDRAS
         for rock in list_rocks:
@@ -256,17 +209,14 @@ while running:
             # VEIRICAMOS COLISION CON EL JUGADOR
             if player_rect.colliderect(rock_rect):
                 if player.pos_y > rock.pos_y:
-                    player.pos_y += player_vel
+                    player.pos_y += player.vel
                 if player.pos_y < rock.pos_y:
-                    player.pos_y -= player_vel
+                    player.pos_y -= player.vel
                 if player.pos_x < rock.pos_x:
-                    player.pos_x -= player_vel
+                    player.pos_x -= player.vel
                 if player.pos_x > rock.pos_x:
-                    player.pos_x += player_vel
+                    player.pos_x += player.vel
 
-
-
-                
         # DIBUJAMOS AL PERSONAJE PRINCIPAL
         image = player.image  # Accedemos al atributo imagen
         image_rect = image.get_rect()  # Obtener el rectángulo de la imagen
@@ -287,10 +237,15 @@ while running:
         # DIBUJAMOS EL SCORE
         draw_score(score,screen)
 
+        # DIBUJAMOS CRONOMETRO
+        elapsed_time = current_time - total_paused_time
+        font = pygame.font.SysFont("microsoftjhengheimicrosoftjhengheiui", 30)
+        elapsed_time = int(elapsed_time)
+        elapsed_time_text = font.render("Time: " + str(elapsed_time ) , True, "BLACK")
+        flag_pause = True
         
-        screen.blit(elapsed_time_text, (10, 40))
-
-
+        screen.blit(elapsed_time_text, (10, 40))        
+        
         pygame.font.get_fonts()
         pygame.display.flip()
         # Control the frame rate
