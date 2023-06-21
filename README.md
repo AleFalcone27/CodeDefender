@@ -6,8 +6,15 @@
 ### - Corriendo 🏃[WASD]
 ### - Utilizando tus breakpoints 🔴 [CLICK]
 
+---
+
 ### PREVIEW 
-### ![img](Images\Preview.png)🔍
+### ![img].(Images\Preview.png)🔍
+
+---
+
+###
+Espoero se les guste 🎮
 
 
 

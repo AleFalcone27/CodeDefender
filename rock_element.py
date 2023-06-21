@@ -1,5 +1,4 @@
 import pygame
-from random import randint
 
 class Rocks():
     def __init__(self,image,rescale,pos_x,pos_y) -> None:

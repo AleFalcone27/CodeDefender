@@ -15,7 +15,7 @@ pygame.init()
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Code Defenderdd")
+pygame.display.set_caption("Code Defender")
 
 # CREAMOS UNA INSTACIA DE LA CLASE MAINCHAR
 player = MainChar(SCREEN_WIDTH / 2 - 50 / 2, SCREEN_HEIGHT / 2 - 100 / 2, 50, 100, "Images\programador.png", 5)
@@ -118,6 +118,7 @@ while running:
     current_time = pygame.time.get_ticks() /1000
     current_time = int(current_time)
 
+    # ENTRAMOS EN PAUSA
     if pause:
         if flag_pause == True:
             pause_start_time = pygame.time.get_ticks() /1000 # ME QUEDOa CON EL TICK EN EL CUAL SE INGRESA A LA PAUSA
