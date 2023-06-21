@@ -8,8 +8,8 @@
 
 ---
 
-### PREVIEW 
-![img](Preview.png)🔍
+### PREVIEW 🔍
+![img](Preview.png)
 
 ---
 
