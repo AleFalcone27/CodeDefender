@@ -13,9 +13,7 @@
 ---
 - Todos los sprites fueron hechos por mí 👦
 - Para los sonidos me inspire en los juegos arcade 🔉
-
----
-La funcionalidad que mas trabajo me costó fue implementar la pausa 🔧
+- La funcionalidad que mas trabajo me costó fue implementar la pausa 🔧
 
 ###
 **Espero se les guste** 🎮
