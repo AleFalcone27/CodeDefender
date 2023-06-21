@@ -9,7 +9,7 @@
 ---
 
 ### PREVIEW 
-![img](Images\Preview.png)🔍
+![img](Preview.png)🔍
 
 ---
 
