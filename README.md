@@ -9,12 +9,12 @@
 ---
 
 ### PREVIEW 
-### ![img].(Images\Preview.png)🔍
+![img](Images\Preview.png)🔍
 
 ---
 
 ###
-Espoero se les guste 🎮
+Espero se les guste 🎮
 
 
 
