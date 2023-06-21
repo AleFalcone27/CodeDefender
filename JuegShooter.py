@@ -7,6 +7,7 @@ from bullets import move_bullet,remove_bullet_off_screen,remove_bullet_when_hit_
 from features import draw_score,start_game,end_game
 from Levels.LVL1 import *
 
+
 # INICIALIZAMOS PYGAME
 pygame.init()
 
@@ -91,8 +92,7 @@ while running:
         pygame.display.flip()
         flag_start = start_game()
 
-    current_time = pygame.time.get_ticks() /1000
-    current_time = int(current_time)        
+        
     for event in pygame.event.get():
         if event.type == QUIT:
             running = False
@@ -110,10 +110,13 @@ while running:
                 bullet_dir_x /= bullet_dir_length
                 bullet_dir_y /= bullet_dir_length
                 bullets.append((bullet_x, bullet_y, bullet_dir_x, bullet_dir_y))
-                
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 pause = not pause
+                
+        
+    current_time = pygame.time.get_ticks() /1000
+    current_time = int(current_time)
 
     if pause:
         if flag_pause == True:
@@ -177,24 +180,30 @@ while running:
         
         
         # ----- NIVELES ------
-        if score == 0:
-            tutorial(enemies,create_enemy)
+        
+        if score == 0: 
+            tutorial(enemies,create_enemy) # Se generan 2 enemigos
             
-        if score >= 1 and score < 15: # Se generan 15 enemigos
-            lvl_1(enemies,create_enemy,list_rocks,screen)
-            enemy_vel = 1.2
+        if score >= 2 and score < 6: # 
+            lvl_1(enemies,create_enemy,list_rocks) # Se generan 8 enemigos
+            enemy_vel = 1
 
-        if score >= 19 and score < 25: # se generan 20 enemigos
-            lvl_2(enemies,create_enemy,list_rocks)
+        if score >= 10 and score < 15 : # 
+            lvl_2(enemies,create_enemy,list_rocks) # 16
+            enemy_vel = 1.1
+            
+        if score >= 21 and score < 34:
+            lvl_3(enemies,create_enemy,list_rocks) # 48
             enemy_vel = 1.2
             
-        if score >= 34 and score < 44:
-            lvl_3(enemies,create_enemy,list_rocks)
-            enemy_vel = 1.5
+        if score >= 43 and score < 50:
+            lvl_4(enemies,create_enemy,list_rocks)
+            enemi_vel = 1.3
             
-        if score >= 58 and score < 68:
-            lvl_4(enemies,create_enemy,list)
-            enemi_vel = 1.7
+        if score >= 69:
+            lvl_5(enemies,create_enemy)
+            enemi_vel = 1.3
+            player.vel = 5
             
         
     # DIBUJAMOS FONDO
@@ -219,13 +228,6 @@ while running:
                     player.pos_x -= player.vel
                 if player.pos_x > rock.pos_x:
                     player.pos_x += player.vel
-
-
-         # ----- ENEMIGOS ------
-        for enemy in enemies:
-            if player_rect.colliderect(enemy):
-                while True:
-                    running = end_game(screen)  # Game over if player collides with an enemy
 
         # DIBUJAMOS AL PERSONAJE PRINCIPAL
         image = player.image  # Accedemos al atributo imagen
@@ -254,6 +256,13 @@ while running:
         flag_pause = True
         
         screen.blit(elapsed_time_text, (10, 40))        
+
+
+        # ----- ENEMIGOS ------
+        for enemy in enemies:
+            if player_rect.colliderect(enemy):
+                end_game(screen,elapsed_time,score)  # Game over if player collides with an enemy
+
         
         pygame.font.get_fonts()
         pygame.display.flip()

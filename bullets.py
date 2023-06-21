@@ -1,6 +1,5 @@
 import pygame
 
-
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
 
@@ -37,7 +36,6 @@ def remove_bullet_when_hit_enemy(bullets_to_remove,bullets):
         try:
             bullets.pop(i)
         except IndexError:
-            print("SOLUCIONASTE")
             pass
     return bullets
     
@@ -54,7 +52,3 @@ def bullet_colision(bullets_to_remove,bullets,enemies,bullet_size):
                 return bullet_hit
             
             
-            
-#   File "c:\Users\aleef\OneDrive\Escritorio\JUEGO\bullets.py", line 37, in remove_bullet_when_hit_enemy
-#     bullets.pop(i)
-# IndexError: pop from empty list

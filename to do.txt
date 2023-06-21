@@ -1,9 +1,0 @@
-
-- SEGUIR ORDENANDO EL CODIGO PARA PODER HACER MAS FACIL EL TEMA DE LOS NIVELES
-
-- Niveles
-- Pantalla de inicio y de final y de pausa
-- Sonidos: Falta solo el sonido de la musica 
-- SQL
-- GUARDAR EN CSV
-- Solucionar error de index out of range
