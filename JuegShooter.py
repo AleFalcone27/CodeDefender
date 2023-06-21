@@ -4,7 +4,7 @@ from player import MainChar
 from rock_element import Rocks
 from pygame.locals import *
 from bullets import move_bullet,remove_bullet_off_screen,remove_bullet_when_hit_enemy,bullet_colision
-from features import draw_score
+from features import draw_score,start_game,end_game
 from Levels.LVL1 import *
 
 # INICIALIZAMOS PYGAME
@@ -14,7 +14,7 @@ pygame.init()
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Enemy Shooter")
+pygame.display.set_caption("Code Defenderdd")
 
 # CREAMOS UNA INSTACIA DE LA CLASE MAINCHAR
 player = MainChar(SCREEN_WIDTH / 2 - 50 / 2, SCREEN_HEIGHT / 2 - 100 / 2, 50, 100, "Images\programador.png", 5)
@@ -34,7 +34,10 @@ enemy_vel = 1
 # SOUNDS
 shot_sound = pygame.mixer.Sound("Sounds\shootSound.wav")
 lose_sound = pygame.mixer.Sound("Sounds\loseSound.wav")
+main_theme = pygame.mixer.Sound("Sounds\main_theme.mp3")
 shot_sound.set_volume(0.1)  # Establece el volumen del sonido de disparo al 50%
+main_theme.play()
+main_theme.set_volume(0.05)
 
 # PAUSA
 pause = False
@@ -43,7 +46,6 @@ pause_start_time = 0
 paused_time = 0
 total_paused_time = 0
 flag2 = False
-
 
 # CREMOS LA LISTA DE PIEDRAS
 list_rocks = [
@@ -77,15 +79,20 @@ def create_enemy():
     enemy = pygame.Rect(x, y, easy_enemy_width, easy_enemy_height)
     enemies.append(enemy)
 
+flag_start = False
 
 # GAME LOOP
 running = True
 clock = pygame.time.Clock()
-
-
 while running:
+    while flag_start == False:
+        intro = pygame.image.load("Images\intro.png")
+        screen.blit(intro, (0,0))
+        pygame.display.flip()
+        flag_start = start_game()
+
     current_time = pygame.time.get_ticks() /1000
-    current_time = int(current_time)
+    current_time = int(current_time)        
     for event in pygame.event.get():
         if event.type == QUIT:
             running = False
@@ -117,9 +124,11 @@ while running:
         paused_time = int(paused_time)
         flag2 = True
 
-        font = pygame.font.SysFont("microsoftjhengheimicrosoftjhengheiui", 30)
+        font = pygame.font.SysFont("microsoftjhengheimicrosoftjhengheiui", 60)
         pause_text = font.render("PAUSE"  , True, "BLACK")
-        screen.blit(elapsed_time_text, (10, 40))         
+        screen.blit(pause_text, (450, 270))     
+
+        pygame.display.flip()
         
     # VERIFICAMOS LA PAUSA
     if not pause:
@@ -130,7 +139,6 @@ while running:
             total_paused_time = total_paused_time + total_paused_time_actual # ACUMULAMOS EL TIEMPO TOTAL DE PAUSA PARA RESTARSELO AL CRONOMETRO MAIN
             elapsed_time = pause_time - total_paused_time # RESTAMOS EL TOTAL DEL TIEMPO DE PAUSA AL RELOJ MAIN
             flag2 = False
-            
         
         # MOVIMIENTO DEL JUGADOR
         keys = pygame.key.get_pressed()
@@ -156,10 +164,6 @@ while running:
             score = score + 1
 
 
-        # ----- ENEMIGOS ------
-        for enemy in enemies:
-            if player_rect.colliderect(enemy):
-                running = False  # Game over if player collides with an enemy
         # Move the enemies
         for enemy in enemies:
             if enemy.x < player.pos_x:
@@ -173,7 +177,6 @@ while running:
         
         
         # ----- NIVELES ------
-        
         if score == 0:
             tutorial(enemies,create_enemy)
             
@@ -217,6 +220,13 @@ while running:
                 if player.pos_x > rock.pos_x:
                     player.pos_x += player.vel
 
+
+         # ----- ENEMIGOS ------
+        for enemy in enemies:
+            if player_rect.colliderect(enemy):
+                while True:
+                    running = end_game(screen)  # Game over if player collides with an enemy
+
         # DIBUJAMOS AL PERSONAJE PRINCIPAL
         image = player.image  # Accedemos al atributo imagen
         image_rect = image.get_rect()  # Obtener el rectángulo de la imagen
@@ -232,7 +242,6 @@ while running:
         for enemy in enemies:
             easy_enemy_image = pygame.image.load("Images\\sintaxError_image.png")
             screen.blit(easy_enemy_image, enemy)
-            
             
         # DIBUJAMOS EL SCORE
         draw_score(score,screen)

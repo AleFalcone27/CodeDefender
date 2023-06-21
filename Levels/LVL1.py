@@ -26,6 +26,7 @@ def tutorial(enemies,create_enemy):
         if len(enemies) < 1:
             create_enemy()
 
+
 def lvl_1 (enemies,create_enemy,list_rocks,screen):
     if len(list_rocks) < 8:
         list_rocks.append(Rocks("Images\\rock.png", 40, 200,250))
@@ -43,7 +44,6 @@ def lvl_3(enemies,create_enemy,list_rocks):
         list_rocks.append(Rocks("Images\\rock.png", 40, 500,700))
     if len(enemies) < 15:
         create_enemy()
-        
         
 def lvl_4(enemies,create_enemy,list_rocks):
     if len(list_rocks) <= 11:
