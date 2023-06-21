@@ -15,9 +15,9 @@ def round(score,screen):
         draw_round(screen,"ROUND 2")
     if score >= 21 and score < 43:
         draw_round(screen,"ROUND 3")
-    if score >= 43 and score < 58:
+    if score >= 43 and score < 69:
         draw_round(screen,"ROUND 4")
-    if score > 59:
+    if score >= 69 :
         draw_round(screen,"FINAL ROUND")
     
 
