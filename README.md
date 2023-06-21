@@ -14,8 +14,15 @@
 - Todos los sprites fueron hechos por mí 👦
 - Para los sonidos me inspire en los juegos arcade 🔉
 - La funcionalidad que mas trabajo me costó fue implementar la pausa 🔧
+- El juego se encuentra en el archivo llamado CodeDefender.py 
 
-###
+
+---
+Recorda tener instalado la biblioteca de pygame
+"""
+pip install pygame
+"""
+
 **Espero se les guste** 🎮
 
 
