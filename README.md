@@ -16,13 +16,11 @@
 - La funcionalidad que mas trabajo me costó fue implementar la pausa 🔧
 - El juego se encuentra en el archivo llamado CodeDefender.py 
 
-
 ---
-Recorda tener instalado la biblioteca de pygame
-"""
-pip install pygame
-"""
+**Recorda tener instalado la biblioteca de pygame**
+``pip install pygame``
 
+###
 **Espero se les guste** 🎮
 
 
