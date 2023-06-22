@@ -9,7 +9,6 @@ class MainChar():
         self.image = pygame.image.load(image)
         self.vel = vel
 
-
     def caminar(self,dir,player_pos,player_vel=5):
         match dir:
             # Nos guardamos el valor de la posicion menos o mas la velocidad segun corresponda y retornamos la misma 

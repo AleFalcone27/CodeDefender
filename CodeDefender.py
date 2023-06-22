@@ -214,7 +214,6 @@ while running:
         #DIBUJAMOS EL SCORE
         round(score,screen)
         
-        
         # DIBUJAMOS LAS PIEDRAS
         for rock in list_rocks:
             rock_rect = rock.draw_rocks(list_rocks,screen)
@@ -256,7 +255,7 @@ while running:
         elapsed_time_text = font.render("Time: " + str(elapsed_time ) , True, "BLACK")
         flag_pause = True
         
-        screen.blit(elapsed_time_text, (10, 40))        
+        screen.blit(elapsed_time_text, (10, 550))        
 
 
         # ----- ENEMIGOS ------

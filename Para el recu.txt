@@ -1,0 +1,6 @@
+- La principal es tomar El nombre por la pantalla
+
+- Agragrle la animacion de caminar para el costado
+
+- Cambiar la distrubucion de score y tiempo uno en cada lado
+ 

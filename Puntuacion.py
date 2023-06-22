@@ -19,31 +19,37 @@ with sqlite3.connect("putuacion.db") as conexion:
         pass
 
 def crear_registro(nombre_jugador,score,tiempo):
+    nombre_jugador = str(nombre_jugador)
+    nombre_jugador = nombre_jugador.replace(",","")
+    nombre_jugador = nombre_jugador.replace("'","")
+    nombre_jugador = nombre_jugador.replace(" ","")
+    nombre_jugador = nombre_jugador.replace("[","")
+    nombre_jugador = nombre_jugador.replace("]","")
+    nombre_jugador = nombre_jugador.capitalize()
     with sqlite3.connect("putuacion.db") as conexion:
         conexion.execute("INSERT INTO tabla_puntuacion (nombre,puntuacion,tiempo,fecha) values (?,?,?,?)", (nombre_jugador,score,tiempo,datetime.date.today()))
         print("-PUNTUACION CARGADA-")
 
 
-
 def obtener_tabla_de_puntuaciones(screen):
-    pos = 75
+    pos = 200
     with sqlite3.connect("putuacion.db") as conexion:
         cursor = conexion.execute("SELECT nombre, puntuacion, tiempo , fecha FROM tabla_puntuacion order by puntuacion DESC")
         escribir_titulo(screen)
         for fila in cursor:
             fila_sanitizada = sanitizar_registro(fila)
             pos = pos + 25
-            font = pygame.font.SysFont("microsoftjhengheimicrosoftjhengheiui", 20)
+            font = pygame.font.SysFont("microsoftjhengheimicrosoftjhengheiui", 17)
             fila_sanitizada = font.render(fila_sanitizada, True, "BLACK")
 
 
-            screen.blit(fila_sanitizada, (100, pos))  
+            screen.blit(fila_sanitizada, (420, pos))  
             pygame.display.flip()
         
         
         cursor.execute("SELECT COUNT(*) FROM tabla_puntuacion")
         cantidad_registros = cursor.fetchone()[0]
-        if cantidad_registros > 10:
+        if cantidad_registros > 8:
             eliminar_registros()
 
 
@@ -64,14 +70,14 @@ def sanitizar_registro(fila):
 
 def escribir_titulo(screen):
     font1 = pygame.font.SysFont("microsoftjhengheimicrosoftjhengheiui", 25)
-    font2 = pygame.font.SysFont("microsoftjhengheimicrosoftjhengheiui", 20)
+    font2 = pygame.font.SysFont("microsoftjhengheimicrosoftjhengheiui", 15)
     text = "TABLA DE PUNTUACIONES"
     text2 = "NOMBRE - SCORE - TIME - FECHA"
     text = font1.render(text , True, "BLACK")
     text2 = font2.render(text2 , True, "BLACK")
     
-    screen.blit(text, (100,25))
-    screen.blit(text2, (100,75))
+    screen.blit(text, (380,170))
+    screen.blit(text2, (410,200))
     
     
         # nombre,score,tiempo = fila
